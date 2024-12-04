@@ -20,8 +20,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('donations/', include('donations.urls')),  # Donations app
-    path('users/', include('users.urls')),          # Users app
-    path('ngos/', include('ngos.urls')),             # NGOs app
-    path('projects/', include('projects.urls')),     # Projects app
+    path('api/donations/', include('donations.urls')),  # Donations app
+    path('api/users/', include('users.urls')),          # Users app
+    path('api/ngos/', include('ngos.urls')),             # NGOs app
+    path('api/projects/', include('projects.urls')),     # Projects app
 ]
