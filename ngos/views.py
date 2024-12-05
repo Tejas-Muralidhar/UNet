@@ -4,6 +4,10 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
 from .models import NGO
 import json
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import NGO
+from .utils import get_recommendations
 
 
 @csrf_exempt
@@ -114,3 +118,38 @@ def view_ngo(request):
         except NGO.DoesNotExist:
             return JsonResponse({"error": "NGO not found"}, status=404)
     return JsonResponse({"error": "Only GET requests are allowed"}, status=405)
+
+
+@api_view(['GET'])
+def recommend_ngos(request):
+    ngo_name = request.query_params.get('ngo_name', None)
+    print(ngo_name)
+    if ngo_name==None:
+        ngos = NGO.objects.all()[:10]
+        top_ngos = [{'id': ngo.id, 'name': ngo.name} for ngo in ngos]
+        return Response(top_ngos)
+
+    recommendations = get_recommendations(ngo_name)
+    
+    if not recommendations:
+        ngos = NGO.objects.all()[:10]
+        top_ngos = [{'id': ngo.id, 'name': ngo.name} for ngo in ngos]
+        return Response(top_ngos)
+
+    return Response(recommendations)
+
+@api_view(['GET'])
+def ngo_details(request, ngo_id):
+    try:
+        ngo = NGO.objects.get(id=ngo_id)
+        return Response({
+            'name': ngo.name,
+            'purpose': ngo.purpose,
+            'address': ngo.address,
+            'contact_person': ngo.contact_person,
+            'email': ngo.email,
+            'mobile_number': ngo.mobile_number
+        })
+    except NGO.DoesNotExist:
+        return Response({"error": "NGO not found."}, status=404)
+
