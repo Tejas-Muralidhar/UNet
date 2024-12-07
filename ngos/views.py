@@ -139,6 +139,10 @@ def recommend_ngos(request):
 
     return Response(recommendations)
 
+from rest_framework.decorators import api_view
+from rest_framework.response import Response
+from .models import NGO
+
 @api_view(['GET'])
 def ngo_details(request, ngo_id):
     try:
@@ -149,7 +153,9 @@ def ngo_details(request, ngo_id):
             'address': ngo.address,
             'contact_person': ngo.contact_person,
             'email': ngo.email,
-            'mobile_number': ngo.mobile_number
+            'mobile_number': ngo.mobile_number,
+            'completed_project': ngo.completed_project,
+            'ongoing_project': ngo.ongoing_project,
         })
     except NGO.DoesNotExist:
         return Response({"error": "NGO not found."}, status=404)

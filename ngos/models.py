@@ -9,6 +9,7 @@ class NGO(models.Model):
     address = models.TextField()
     contact_person = models.CharField(max_length=255)
     purpose = models.TextField()
-
+    completed_project = models.CharField(max_length=255, default='No Completed Projects')
+    ongoing_project = models.CharField(max_length=255, default='Not Applicable')
     def __str__(self):
         return self.name
