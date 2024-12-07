@@ -10,6 +10,7 @@ def get_recommendations(ngo_name):
     logger.info(f"Received NGO name for recommendation: {ngo_name}")
     
     ngos = list(NGO.objects.all().values())
+    total_ngos = len(ngos)
     logger.info(f"Number of NGOs fetched: {len(ngos)}")
     
     if not ngos:
@@ -47,8 +48,9 @@ def get_recommendations(ngo_name):
         # Get top 10 recommended NGOs excluding the first one (itself)
         recommended_ngos = [
             {'id': df.iloc[i[0]]['id'], 'name': df.iloc[i[0]]['name']}
-            for i in distances[0:10]
+            for i in distances[0:total_ngos-1]
         ]
+        print(recommended_ngos)
         return recommended_ngos
 
     except IndexError:

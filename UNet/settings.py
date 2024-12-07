@@ -101,9 +101,9 @@ WSGI_APPLICATION = 'UNet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'UNet',  # Replace with your database name
+        'NAME': 'unet',  # Replace with your database name
         'USER': 'postgres',       # Replace with your PostgreSQL username
-        'PASSWORD': '1234',   # Replace with your PostgreSQL password
+        'PASSWORD': 'root',   # Replace with your PostgreSQL password
         'HOST': 'localhost',           # Set to 'localhost' if running locally
         'PORT': '5432',                # Default PostgreSQL port
     }
@@ -113,7 +113,7 @@ DATABASES = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=600),  # Adjust as needed
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Adjust as needed
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,

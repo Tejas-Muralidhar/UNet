@@ -123,16 +123,17 @@ def view_ngo(request):
 @api_view(['GET'])
 def recommend_ngos(request):
     ngo_name = request.query_params.get('ngo_name', None)
+    total_ngos = NGO.objects.count()
     print(ngo_name)
     if ngo_name==None:
-        ngos = NGO.objects.all()[:10]
+        ngos = NGO.objects.all()[:total_ngos-1]
         top_ngos = [{'id': ngo.id, 'name': ngo.name} for ngo in ngos]
         return Response(top_ngos)
 
     recommendations = get_recommendations(ngo_name)
     
     if not recommendations:
-        ngos = NGO.objects.all()[:10]
+        ngos = NGO.objects.all()[:total_ngos-1]
         top_ngos = [{'id': ngo.id, 'name': ngo.name} for ngo in ngos]
         return Response(top_ngos)
 
@@ -152,4 +153,3 @@ def ngo_details(request, ngo_id):
         })
     except NGO.DoesNotExist:
         return Response({"error": "NGO not found."}, status=404)
-
