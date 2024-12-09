@@ -8,6 +8,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from .models import NGO
 from .utils import get_recommendations
+from django.core.mail import send_mail
 
 
 @csrf_exempt
@@ -159,3 +160,44 @@ def ngo_details(request, ngo_id):
         })
     except NGO.DoesNotExist:
         return Response({"error": "NGO not found."}, status=404)
+    
+@csrf_exempt
+def email_service(request):
+    print("send_email view called")
+    if request.method == 'POST':
+        print("POST request received")
+        try:
+            data = json.loads(request.body)
+            user_name = data.get('user_name')
+            user_email = data.get('user_email')
+            ngo_name = data.get('ngo_name')
+            ngo_email = data.get('ngo_email')
+            action = data.get('action')  # "volunteer" or "donate"
+
+            # Log the details for debugging
+            print(f"Action: {action}")
+            print(f"User Name: {user_name}")
+            print(f"User Email: {user_email}")
+            print(f"NGO Name: {ngo_name}")
+            print(f"NGO Email: {ngo_email}")
+
+            message =""
+            if action == 'volunteer':
+                message = message = f"Hey {ngo_name}, {user_name} ({user_email}) wants to {action} at {ngo_name}! Please reach out to them at {user_email}"
+            if action == 'donate':
+                message = f"Hey {ngo_name}, {user_name} ({user_email}) wants to {action} to {ngo_name}! Please reach out to them at {user_email}"
+    
+            print(f"Email Message: {message}")
+
+            send_mail(
+                subject="Notification from UNet: New Request",
+                message=message,  # Email body
+                from_email='shruthisdustbin@gmail.com',  # Use EMAIL_HOST_USER
+                recipient_list=['connectforimpact.project@gmail.com'],  # Dummy recipient for testing
+                fail_silently=False,  # Raise errors if email sending fails
+            )
+
+            return JsonResponse({'message': 'Email processed successfully!'}, status=200)
+        except Exception as e:
+            return JsonResponse({'error': str(e)}, status=400)
+    return JsonResponse({'error': 'Invalid request method.'}, status=405)

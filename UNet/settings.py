@@ -104,7 +104,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'unet',  # Replace with your database name
         'USER': 'postgres',       # Replace with your PostgreSQL username
-        'PASSWORD': 'root',   # Replace with your PostgreSQL password
+        'PASSWORD': 'Srh*210103',   # Replace with your PostgreSQL password
         'HOST': '127.0.0.1',           # Set to 'localhost' if running locally
         'PORT': '5432',                # Default PostgreSQL port
     }
@@ -169,3 +169,11 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'shruthisdustbin@gmail.com' #to email, please change it later!! i didnt have any other spare testing email domains
+EMAIL_HOST_PASSWORD = 'iflv rovi zwip hvss' #app password, can be generated in google after setting up 2FA for that account
+

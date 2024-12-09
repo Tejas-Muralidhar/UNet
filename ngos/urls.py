@@ -10,4 +10,5 @@ urlpatterns = [
     path('profile/', views.view_ngo, name='view_ngo'),
     path('recommend-ngos/', recommend_ngos, name='recommend-ngos'),
     path('ngo-detail/<int:ngo_id>/', ngo_details, name='ngo-details'),
+    path('email/', views.email_service, name='email_service')
 ]
