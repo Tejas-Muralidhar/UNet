@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'projects',
     'rest_framework_simplejwt',
     'rest_framework_simplejwt.token_blacklist',
+    'payments',
 ]
 
 AUTHENTICATION_BACKENDS = [
@@ -103,7 +104,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'unet',  # Replace with your database name
         'USER': 'postgres',       # Replace with your PostgreSQL username
-        'PASSWORD': '1234',   # Replace with your PostgreSQL password
+        'PASSWORD': 'root',   # Replace with your PostgreSQL password
         'HOST': '127.0.0.1',           # Set to 'localhost' if running locally
         'PORT': '5432',                # Default PostgreSQL port
     }
@@ -113,7 +114,7 @@ DATABASES = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=60),  # Adjust as needed
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),  # Adjust as needed
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,

@@ -24,4 +24,5 @@ urlpatterns = [
     path('api/users/', include('users.urls')),          # Users app
     path('api/ngos/', include('ngos.urls')),             # NGOs app
     path('api/projects/', include('projects.urls')),     # Projects app
+    path('api/payments/', include('payments.urls')),
 ]

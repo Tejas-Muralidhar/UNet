@@ -11,5 +11,3 @@ class Donation(models.Model):
     date = models.DateTimeField(default=now)
     amount = models.DecimalField(max_digits=10, decimal_places=2)
 
-    def __str__(self):
-        return f"Donation #{self.id} - {self.amount} by User {self.user_id_id} to NGO {self.ngo_id_id}"

@@ -14,6 +14,7 @@ from rest_framework_simplejwt.tokens import RefreshToken
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 from rest_framework import status
+from donations.models import Donation
 
 
 @csrf_exempt
@@ -121,12 +122,20 @@ def view_user(request):
     if request.method == "GET":
         print(f"Authorization Header: {request.headers.get('Authorization')}")
         user = request.user
+        
+        #total donations done by the user:
+        all_donations = Donation.objects.filter(user_id = user.id)
+        donated_amount = 0
+        for donation in all_donations:
+            donated_amount = donated_amount + donation.amount
+
         user_data = {
             "id": user.id,
             "name": user.name,
             "email": user.email,
-            "date_joined": user.date_joined,
-            "last_login": user.last_login,
+            "date_joined": user.date_joined.date(),
+            "last_login": user.last_login.date(),
+            "donated_amount": donated_amount
         }
         return JsonResponse(user_data, status=200)
     

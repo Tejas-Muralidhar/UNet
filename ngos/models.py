@@ -11,5 +11,9 @@ class NGO(models.Model):
     purpose = models.TextField()
     completed_project = models.CharField(max_length=255, default='No Completed Projects')
     ongoing_project = models.CharField(max_length=255, default='Not Applicable')
+    
+    # Add the account_number field
+    account_number = models.CharField(max_length=16, default='0000000000000000')  # Added new column
+    
     def __str__(self):
         return self.name
