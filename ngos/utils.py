@@ -48,7 +48,7 @@ def get_recommendations(ngo_name):
         # Get top 10 recommended NGOs excluding the first one (itself)
         recommended_ngos = [
             {'id': df.iloc[i[0]]['id'], 'name': df.iloc[i[0]]['name']}
-            for i in distances[0:total_ngos-1]
+            for i in distances[0:total_ngos]
         ]
         print(recommended_ngos)
         return recommended_ngos

@@ -102,9 +102,9 @@ WSGI_APPLICATION = 'UNet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'unet',  # Replace with your database name
+        'NAME': 'unett',  # Replace with your database name
         'USER': 'postgres',       # Replace with your PostgreSQL username
-        'PASSWORD': 'Srh*210103',   # Replace with your PostgreSQL password
+        'PASSWORD': '1234',   # Replace with your PostgreSQL password
         'HOST': '127.0.0.1',           # Set to 'localhost' if running locally
         'PORT': '5432',                # Default PostgreSQL port
     }

@@ -127,14 +127,14 @@ def recommend_ngos(request):
     total_ngos = NGO.objects.count()
     print(ngo_name)
     if ngo_name==None:
-        ngos = NGO.objects.all()[:total_ngos-1]
+        ngos = NGO.objects.all()[:total_ngos]
         top_ngos = [{'id': ngo.id, 'name': ngo.name} for ngo in ngos]
         return Response(top_ngos)
 
     recommendations = get_recommendations(ngo_name)
     
     if not recommendations:
-        ngos = NGO.objects.all()[:total_ngos-1]
+        ngos = NGO.objects.all()[:total_ngos]
         top_ngos = [{'id': ngo.id, 'name': ngo.name} for ngo in ngos]
         return Response(top_ngos)
 
@@ -201,3 +201,63 @@ def email_service(request):
         except Exception as e:
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
+
+from django.shortcuts import render
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.decorators import api_view, permission_classes
+from rest_framework.permissions import AllowAny
+from rest_framework.status import HTTP_201_CREATED, HTTP_400_BAD_REQUEST
+from .models import NGO
+
+@csrf_exempt
+@api_view(['POST'])
+@permission_classes([AllowAny])
+def register_ngo(request):
+    """
+    Register a new NGO with the provided details.
+    """
+    try:
+        # Extract data from the request
+        data = request.data
+        name = data.get('name')
+        mobile_number = data.get('mobile_number')
+        email = data.get('email')
+        address = data.get('address')
+        contact_person = data.get('contact_person')
+        purpose = data.get('purpose')
+        completed_project = data.get('completed_project', 'No Completed Projects')
+        ongoing_project = data.get('ongoing_project', 'Not Applicable')
+        account_number = data.get('account_number', '0000000000000000')
+
+        # Validation
+        if not all([name, mobile_number, email, address, contact_person, purpose]):
+            return JsonResponse({"error": "All fields except 'completed_project' and 'ongoing_project' are required."}, status=HTTP_400_BAD_REQUEST)
+
+        if NGO.objects.filter(email=email).exists():
+            return JsonResponse({"error": "An NGO with this email already exists."}, status=HTTP_400_BAD_REQUEST)
+
+        if NGO.objects.filter(account_number=account_number).exists():
+            return JsonResponse({"error": "This account number is already associated with an NGO."}, status=HTTP_400_BAD_REQUEST)
+
+        # Save the NGO to the database
+        ngo = NGO.objects.create(
+            name=name,
+            mobile_number=mobile_number,
+            email=email,
+            address=address,
+            contact_person=contact_person,
+            purpose=purpose,
+            completed_project=completed_project,
+            ongoing_project=ongoing_project,
+            account_number=account_number
+        )
+
+        return JsonResponse(
+            {"message": "NGO registered successfully", "ngo_id": ngo.id},
+            status=HTTP_201_CREATED
+        )
+
+    except Exception as e:
+        return JsonResponse({"error": str(e)}, status=HTTP_400_BAD_REQUEST)
+
