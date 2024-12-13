@@ -15,6 +15,7 @@ from pathlib import Path
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+PRIVATE_KEY = "-----BEGIN RSA PRIVATE KEY-----\nMIICWwIBAAKBgQDceMDSQGhv7t4AInvtU41k+NdoUvodaNxb4JqqBfwPH9OnHqLg\n+CsQSKOoHn2ysX9Npv/NZwp/pw5z+I92gvjLan8Zdk3UCnR0jUcAw2qxtQseYLoj\nN3Wr/xsnU/48LR1FU9Uc6TF3kbPRmsut2+m6rz8/FXI0YyMth3jsX4i3nQIDAQAB\nAoGAY4XfBQouGtkpPcZTSv68hSgPlPhgD4aWcqMhLj8lWW50jKw3unZMej1QI0Qg\nWdnmLZeFQaOSCa3PyGob2NOmmtX8Z5+1OW/MhhHSoOINNTyTayAbOIxmy1GSmM78\nP+m5mxX8+ufSD6VCXJh1IRb2ccNeoR1Plx8h1YxGQye0IgECQQD3lZiccDLUhSOe\n1adIH56jFdUlOXc1PRfQuLgupVWGL822EpX1xnDwPiHVI5tjb4WGVRKA9VTeHGUP\nlZYvjBCpAkEA4/c7GrBqM4eQW3f4zP9HCzzMu4RV0ycRIc2lRHSZ5bP3sGGaJ4Cy\nzZviNsIEzC0m8+I+VlDx8elj97dzshHj1QJAZkxqlWEKr6Mfd7ah+vwNqScRPeND\nrTzEBVr9x1BLSTmhTvTY/4dyDOIvSoj+4JQo4Ltv/NbhrTCgVVMijhzamQJAb7ok\nBZig9FBkt++8yPv0XdWWofDh/3MOOnsHnN1o7+OcaZ3sZ5/0AkF8RUoh/8/BX5Zq\n5vMVIXM5w5bt5UBPYQJAbnUppucTYoXQx66cvP/DQWNAngEOxVREJ1LtMAprq7KD\nPbS5c261+AX2bxyS7shwuqoKGSX4aFUr1ZJtB1+Axw==\n-----END RSA PRIVATE KEY-----\n"
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
@@ -102,9 +103,9 @@ WSGI_APPLICATION = 'UNet.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'unett',  # Replace with your database name
+        'NAME': 'unet',  # Replace with your database name
         'USER': 'postgres',       # Replace with your PostgreSQL username
-        'PASSWORD': '1234',   # Replace with your PostgreSQL password
+        'PASSWORD': 'root',   # Replace with your PostgreSQL password
         'HOST': '127.0.0.1',           # Set to 'localhost' if running locally
         'PORT': '5432',                # Default PostgreSQL port
     }
@@ -114,7 +115,7 @@ DATABASES = {
 from datetime import timedelta
 
 SIMPLE_JWT = {
-    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=180),  # Adjust as needed
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=360),  # Adjust as needed
     'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
     'ROTATE_REFRESH_TOKENS': False,
     'BLACKLIST_AFTER_ROTATION': True,

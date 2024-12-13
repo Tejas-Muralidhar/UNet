@@ -15,7 +15,11 @@ from rest_framework_simplejwt.authentication import JWTAuthentication
 from rest_framework_simplejwt.token_blacklist.models import BlacklistedToken, OutstandingToken
 from rest_framework import status
 from donations.models import Donation
-
+import json
+from cryptography.hazmat.primitives import hashes
+from cryptography.hazmat.primitives.asymmetric import rsa, padding
+from cryptography.hazmat.primitives import serialization
+from django.conf import settings
 
 @csrf_exempt
 @api_view(['POST'])
@@ -116,6 +120,8 @@ def create_user(request):
     except Exception as e:
         return Response({"error": str(e)}, status=HTTP_400_BAD_REQUEST)
 
+from datetime import datetime
+
 @api_view(['GET'])
 def view_user(request):
     """Returns a detailed view of the profile of the logged-in user."""
@@ -123,24 +129,26 @@ def view_user(request):
         print(f"Authorization Header: {request.headers.get('Authorization')}")
         user = request.user
         
-        #total donations done by the user:
-        all_donations = Donation.objects.filter(user_id = user.id)
-        donated_amount = 0
-        for donation in all_donations:
-            donated_amount = donated_amount + donation.amount
+        # total donations done by the user:
+        all_donations = Donation.objects.filter(user_id=user.id)
+        donated_amount = sum(donation.amount for donation in all_donations)
+
+        # Check if last_login is None, and if so, set it to the current time
+        last_login = user.last_login.date() if user.last_login else datetime.now().date()
 
         user_data = {
             "id": user.id,
             "name": user.name,
             "email": user.email,
             "date_joined": user.date_joined.date(),
-            "last_login": user.last_login.date(),
+            "last_login": last_login,
             "donated_amount": donated_amount
         }
         return JsonResponse(user_data, status=200)
     
     # Handle other methods (like POST) if needed
     return JsonResponse({"error": "Only GET requests are allowed for this endpoint."}, status=405)
+
 
 from datetime import datetime
 from django.db.models import Q
@@ -150,5 +158,4 @@ def clean_expired_tokens():
     now = datetime.now()
     expired_tokens = OutstandingToken.objects.filter(expires_at__lt=now)
     expired_tokens.delete()
-
 

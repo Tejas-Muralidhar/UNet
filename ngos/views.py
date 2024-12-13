@@ -2,6 +2,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.hashers import make_password
+
+from UNet import settings
 from .models import NGO
 import json
 from rest_framework.decorators import api_view
@@ -9,6 +11,9 @@ from rest_framework.response import Response
 from .models import NGO
 from .utils import get_recommendations
 from django.core.mail import send_mail
+
+
+
 
 
 @csrf_exempt
@@ -192,13 +197,14 @@ def email_service(request):
             send_mail(
                 subject="Notification from UNet: New Request",
                 message=message,  # Email body
-                from_email='shruthisdustbin@gmail.com',  # Use EMAIL_HOST_USER
+                from_email= settings.EMAIL_HOST_USER,  # Use EMAIL_HOST_USER
                 recipient_list=['connectforimpact.project@gmail.com'],  # Dummy recipient for testing
                 fail_silently=False,  # Raise errors if email sending fails
             )
 
             return JsonResponse({'message': 'Email processed successfully!'}, status=200)
         except Exception as e:
+            print(str(e))
             return JsonResponse({'error': str(e)}, status=400)
     return JsonResponse({'error': 'Invalid request method.'}, status=405)
 
